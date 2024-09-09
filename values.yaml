@@ -1,0 +1,17 @@
+replicaCount: 2
+
+podA:
+  image: nginx:alpine
+  port: 80
+
+podB:
+  image: nginx:latest
+  port: 80
+
+podC:
+  image: nginx:latest
+  port: 80
+
+service:
+  type: ClusterIP
+  port: 80

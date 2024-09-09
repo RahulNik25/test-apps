@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-b
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: pod-b
+  template:
+    metadata:
+      labels:
+        app: pod-b
+    spec:
+      initContainers:
+      - name: wait-for-pod-a
+        image: alpine:latest
+        command: ['sh', '-c', 'until nc -z pod-a 80; do echo "Waiting for pod-a"; sleep 2; done']
+      containers:
+      - name: pod-b-container
+        image: {{ .Values.podB.image }} 
+        ports:
+        - containerPort: {{ .Values.podB.port }}
